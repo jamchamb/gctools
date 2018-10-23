@@ -10,6 +10,7 @@
 #include <phosg-audio/File.hh>
 #include <vector>
 #include <map>
+#include <utility>
 
 #include "instrument.hh"
 
@@ -136,7 +137,7 @@ struct wsys_header {
 
 
 
-pair<uint32_t, vector<Sound>> wsys_decode(void* vdata, size_t size,
+pair<uint32_t, vector<Sound> > wsys_decode(void* vdata, size_t size,
     const char* base_directory) {
   uint8_t* data = reinterpret_cast<uint8_t*>(vdata);
 
@@ -515,7 +516,7 @@ SoundEnvironment bx_decode(void* vdata, size_t size, const char* base_directory,
       ibnk.chunk_id = x;
       ret.instrument_banks.emplace(x, move(ibnk));
     } else {
-      ret.instrument_banks.emplace(x, x);
+        ret.instrument_banks.emplace(x, InstrumentBank(x));
     }
     entry++;
   }
@@ -571,17 +572,17 @@ SoundEnvironment create_midi_sound_environment(
   SoundEnvironment env;
 
   // create instrument bank 0
-  auto& inst_bank = env.instrument_banks.emplace(0, 0).first->second;
+  auto& inst_bank = env.instrument_banks.emplace(0, InstrumentBank(0)).first->second;
   for (const auto& it : instrument_metadata) {
     // TODO: do we need to pass in base_note for the vel region?
-    auto& inst = inst_bank.id_to_instrument.emplace(it.first, it.first).first->second;
+    auto& inst = inst_bank.id_to_instrument.emplace(it.first, Instrument(it.first)).first->second;
     inst.key_regions.emplace_back(0, 0x7F);
     auto& key_region = inst.key_regions.back();
     key_region.vel_regions.emplace_back(0, 0x7F, it.first, 1);
   }
 
   // create sample bank 0
-  auto& sample_bank = env.sample_banks.emplace(0, 0).first->second;
+  auto& sample_bank = env.sample_banks.emplace(0, vector<Sound>()).first->second;
   for (const auto& it : instrument_metadata) {
     sample_bank.emplace_back();
     Sound& s = sample_bank.back();

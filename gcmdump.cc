@@ -211,7 +211,7 @@ int main(int argc, char* argv[]) {
   if (format == Format::Unknown) {
     if (header.gcm.gc_magic == 0x3D9F33C2) {
       format = Format::GCM;
-    } else if (header.tgc.magic == 0xA2380FAE) {
+    } else if (header.tgc.magic == (int32_t) 0xA2380FAE) {
       format = Format::TGC;
     } else {
       fprintf(stderr, "can\'t determine archive type of %s\n", filename);

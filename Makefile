@@ -8,7 +8,7 @@ afsdump: afsdump.c
 	gcc $(CFLAGS) -o afsdump afsdump.c
 
 gcmdump: gcmdump.cc
-	g++ $(CXXFLAGS) -o gcmdump gcmdump.cc -lphosg
+	g++ $(CXXFLAGS) -o gcmdump gcmdump.cc -lphosg -lpthread
 
 gsldump: gsldump.c
 	gcc $(CFLAGS) -o gsldump gsldump.c
@@ -17,7 +17,7 @@ gvmdump: gvmdump.c
 	gcc $(CFLAGS) -o gvmdump gvmdump.c
 
 rcfdump: rcfdump.cc
-	g++ $(CXXFLAGS) -o rcfdump rcfdump.cc -lphosg
+	g++ $(CXXFLAGS) -o rcfdump rcfdump.cc -lphosg -lpthread
 
 pae2gvm: pae2gvm.c
 	gcc $(CFLAGS) -o pae2gvm pae2gvm.c prs/prs.c prs/data_log.c

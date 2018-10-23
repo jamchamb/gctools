@@ -2,6 +2,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <algorithm>
 
 #include <samplerate.h>
 
